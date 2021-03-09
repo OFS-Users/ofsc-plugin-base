@@ -5,7 +5,7 @@ var proxy;
 
 
 function openMessage(data) {
-  <!--PLACEHOLDER FOR CUSTOM CODE-- >
+  //PLACEHOLDER FOR CUSTOM CODE-- >
 
 
   // Credential data from the Plugin configuration
@@ -29,7 +29,7 @@ function openMessage(data) {
     updateResources();
   });
 
-  <!--END OF PLACEHOLDER-- >
+  //END OF PLACEHOLDER-- >
 }
 
 
@@ -69,19 +69,100 @@ async function processData(csv) {
   var element = document.getElementById("action-debug");
   for (var i=1; i<allTextLines.length; i++) {
       var data = allTextLines[i].split(';');
-      var fields = {
-        "recordType": data[1],
-        "startDate": data[2],
-        "scheduleLabel": data[3],
-        "comments": data[4]
+      var fields = {};
+      fields.recordType = data[1];
+      //The date when this schedule takes effect. The format is 'YYYY-MM-DD'.
+      fields.startDate = data[2];
+      
+      //[OPTIONAL]The date when this schedule ends. The date is in 'YYYY-MM-DD' format.
+      if(data[3] != ""){
+        fields.endDate = data[3];
       }
+      //The label of the work schedule in Oracle Field Service. This property is only available if the record type is schedule.
+      if(data[1]=="schedule"){
+        fields.scheduleLabel = data[4];
+      }
+      ////[OPTIONAL]The description of the schedule in Oracle Field Service.
+      if(data[5] != ""){
+        fields.comments = data[5];
+      }
+      //Is Working Shift
+      if(data[6] != ""){
+        fields.isWorking = Boolean(data[6]);
+      }
+      //[OPTIONAL]Create Recurrence object
+      if (data[7] == "YES"){
+        var objRecurrence = {};
+        if (data[8]!= ""){
+          /**The start day (in 'YYYY-MM-DD' format) of the schedule period applicable for each year, when the schedule is in effect. 
+          It is used only if the recurrence type is yearly*/
+          objRecurrence.dayFrom = data[8];
+        }
+        if (data[9]!= ""){
+          /**The end day (in 'YYYY-MM-DD' format) of the schedule period applicable for each year, when the schedule is in effect. 
+          It is used only if the recurrence type is yearly.*/
+          objRecurrence.dayTo = data[9];
+        }
+        /**Title: Recur Every
+          Minimum Value: 1
+          Maximum Value: 255
+          The time between each recurrence of the work schedule. 
+          Depending on the value selected for 'recurrence', the value of the parameter indicates the time between recurrence in days or weeks. 
+          For example, if '4' is the value of this parameter, and the 'recurrence' is 'daily', it indicates that the time between each recurrence is four days. */
+        objRecurrence.recurEvery = parseInt(data[10],10);
+        
+        /**Title: Recurrence Type
+        Allowed Values: [ "daily", "weekly", "yearly", "everyday" ]
+        The type of the recurrence. This property along with the 'recurEvery' property defines the time between each recurrence. 
+        For example, if the value of this property is 'daily' and the value of the property 'recurEvery' is '4', then the time between each recurrence is four days. */
+        objRecurrence.recurrenceType = data[11];
+        /**Title: Recurrence Weekdays
+            The weekdays on which the work shift recurs. */
+        if (data[12] != "")
+        {
+          objRecurrence.weekdays = data[12].split('&')
+        }
+        fields.recurrence = objRecurrence;
+      }
+      /**Title: Non-working Reason
+      The reason for the non-working day (for example, holiday, vacation). These reasons are preconfigured in the Oracle Field Service UI. */
+      if (data[13] != ""){
+        fields.nonWorkingReason = data[13];
+      }
+      /**Title: Work Shift Label
+      The label of the work shift in Oracle Field Service. 
+      This property is only available if the value of recordType is either shift or extra_shift. */
+      if ((data[1]=="shift" || data[1]=="extra_shift") && data[14] != ""){
+        fields.shiftLabel = data[14];
+      }
+      /**Title: Shift Type
+      Allowed Values: [ "regular", "on-call" ]
+      The type of the work shift. */
+      if ((data[1]=="shift" || data[1]=="extra_shift") && data[15] != ""){
+        fields.shiftType = data[15];
+      } 
+      /**Title: Work Time End
+      The end time of the working day when this schedule is in effect. 
+      The format is 'HH:MM'. This property is not available if the value of the isWorking parameter is false. */
+      if (data[16] != ""){
+        fields.workTimeEnd = data[16];
+      }
+      /**Title: Work Time Start
+      The start time of the working day when this schedule is in effect. The format is 'HH:MM'. 
+      This property is not available if the value of the isWorking parameter is false. */
+      if (data[17] != ""){
+        fields.workTimeStart = data[17];
+      }
+
+      var myJSON2 = JSON.stringify(fields, undefined,4);
+      console.log("Fields: " + myJSON2);
       const updateResponse = await proxy.updateResourceWorkschedule(data[0],fields);
       console.log(updateResponse);
       var myJSON = JSON.stringify(updateResponse, undefined,4);
-      element.innerHTML = element.innerHTML + "<pre>" + myJSON + "</pre>";
+      element.innerHTML = element.innerHTML + "<textarea rows='10' cols='50'>" + myJSON + "</textarea>";
   }
   
-  element.innerHTML = element.innerHTML + "<pre>" + allTextLines.length + " Recursos actualizados</pre>";
+  element.innerHTML = element.innerHTML + "<pre>" + allTextLines.length-1 + " Recursos actualizados</pre>";
 
 }
 
