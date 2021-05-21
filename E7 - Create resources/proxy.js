@@ -28,12 +28,12 @@ class OFSCProxy {
        var myHeaders = new Headers();
        myHeaders.append("Authorization", this.authorization);
        var requestOptions = {
-           method: 'POST',
+           method: 'PUT',
            headers: myHeaders,
            redirect: 'follow',
            body: JSON.stringify(fields)
        };
-      console.log('info', 'REQUEST Data createResource' + JSON.stringify(requestOptions));
+      console.log('info', 'REQUEST Data createResource' + JSON.stringify(requestOptions, undefined, 4));
        const fetchPromiseUpdate = fetch(theURL, requestOptions)
            .then(response => response.json())
            .then(function(response) {
@@ -43,6 +43,36 @@ class OFSCProxy {
            .catch(error => console.log('error', error));
        return fetchPromiseUpdate;
    }
+   createUser( login, fields ){
+      var theURL = new URL('/rest/ofscCore/v1/users/'+login,this.baseURL);
+      console.log('info', '/rest/ofscCore/v1/users/'+login);
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", this.authorization);
+
+      var userFields = {};
+      userFields["language"] =  fields["language"];
+      userFields["timeZone"] = fields["timeZone"];
+      userFields["userType"] = fields["userType"];
+      userFields["login"] = fields["resourceId"];
+      userFields["name"] = fields["name"];
+      userFields["mainResourceId"]=  fields["resourceId"] ;
+      userFields["resources"]= [ fields["resourceId"] ];
+      var requestOptions = {
+          method: 'PUT',
+          headers: myHeaders,
+          redirect: 'follow',
+          body: JSON.stringify(userFields)
+      };
+     console.log('info', 'REQUEST Data createResource' + JSON.stringify(requestOptions, undefined, 4));
+      const fetchPromiseUpdate = fetch(theURL, requestOptions)
+          .then(response => response.json())
+          .then(function(response) {
+              // Your code for handling the data you get from the API
+              return response;
+          })
+          .catch(error => console.log('error', error));
+      return fetchPromiseUpdate;
+  }
     updateResourceWorkschedule( resourceId, fields ){
        var theURL = new URL('/rest/ofscCore/v1/resources/'+resourceId+'/workSchedules',this.baseURL);
        console.log('info', '/rest/ofscCore/v1/resources/'+resourceId+'/workSchedules');
@@ -54,7 +84,7 @@ class OFSCProxy {
            redirect: 'follow',
            body: JSON.stringify(fields)
        };
-      console.log('info', 'REQUEST Data updateREsourceWorkSchedule' + JSON.stringify(requestOptions));
+      console.log('info', 'REQUEST Data updateREsourceWorkSchedule' + JSON.stringify(requestOptions, undefined, 4));
        const fetchPromiseUpdate = fetch(theURL, requestOptions)
            .then(response => response.json())
            .then(function(response) {
@@ -75,7 +105,7 @@ class OFSCProxy {
           redirect: 'follow',
           body: JSON.stringify(fields)
       };
-     console.log('info', 'REQUEST Data updateResourceworkSkills' + JSON.stringify(requestOptions));
+     console.log('info', 'REQUEST Data updateResourceworkSkills' + JSON.stringify(requestOptions, undefined, 4));
       const fetchPromiseUpdate = fetch(theURL, requestOptions)
           .then(response => response.json())
           .then(function(response) {

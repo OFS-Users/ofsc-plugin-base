@@ -64,66 +64,62 @@ function loadHandler(event) {
 }
 
 
-unction processData(csv) {
-     console.log("Processing data");
-      var activities = [];
-      var activitiesFields = [];
-        var allTextLines = csv.split(/\r\n|\n/);
-        var lines = [];
-        for (var i=0; i<allTextLines.length; i++) {
-          if ( i==0 ){
-            activitiesFields = allTextLines[i].split(',');
-          }else{
-            var singleActivity = {};
-            var data = allTextLines[i].split(',');
-            for (var j=0; j<data.length; j++) {
-              if (data[j] && data[j].length > 0){
-                  singleActivity[activitiesFields[j]]=data[j];
-                  }
-            }
-            activities.push(singleActivity);
-          }
-        }
-      //var activitiesJson = {};
-      //activitiesJson["activities"]=activities;
-      //internalData.activityFile= activitiesJson;
-      internalData.activityFile= activities;
-      var element = document.getElementById("activity_list");
-      element.innerHTML = JSON.stringify(internalData.activityFile, undefined, 4);
-  }
+
 
 async function processData(csv) {
   var allTextLines = csv.split(/\r\n|\n/);
-  resourceFields=[];
-  globalResponses = "";
+  var resourceFields=[];
+  var globalResponses = "";
   var element = document.getElementById("action-debug");
-  for (var i=1; i<allTextLines.length; i++) {
+  for (var i=0; i<allTextLines.length; i++) {
     if ( i==0 ){
       resourceFields = allTextLines[i].split(',');
     }else{
       var singleResource = {};
-      var resourceId = {};
-      var resourceSkills = {};
+      var singleUser = {};
+      var resourceId = "";
+      var resourceSkillsValues = [];
       var data = allTextLines[i].split(',');
       for (var j=0; j<data.length; j++) {
         if (resourceFields[j] && resourceFields[j]=="resourceId"){
            resourceId = data[j];
+           singleUser[resourceFields[j]] = data[j];
         }
-        if (resourceFields[j] && resourceFields[j]=="skills"){
-          resourceSkills = data[j];
+        else if (resourceFields[j] && resourceFields[j]=="userType"){
+           singleUser[resourceFields[j]] = data[j];
         }
-        if (data[j] && data[j].length > 0){
-            singleActivity[resourceFields[j]]=data[j];
+        else if (resourceFields[j] && resourceFields[j]=="skills"){
+
+          var resourceSkillsArray = data[j].split(';');
+          //globalResponses = globalResponses + "Skills found "  + data[j] + " length " + resourceSkillsArray.length +" without resourceId \n";
+          for (var k=0; k < resourceSkillsArray.length ; k++){
+              var resourceSkill = {}
+              resourceSkill["workSkill"]=resourceSkillsArray[k];
+              resourceSkill["ratio"]="100" ;
+              resourceSkillsValues.push(resourceSkill);
+          }
+        }
+        else if (data[j] && data[j].length > 0){
+            singleResource[resourceFields[j]]=data[j];
+            singleUser[resourceFields[j]]=data[j]
         }
       }
-      const createResource = await proxy.createResource(resourceId,singleResource);
-      console.log(createResource);
-      var myJSON = JSON.stringify(createResource, undefined,4);
-      globalResponses = globalResponses + myJSON;
-      const updateResponse = await proxy.updateResourceworkSkills(resourceId,resourceSkills);
-      console.log(updateResponse);
-      myJSON = JSON.stringify(updateResponse, undefined,4);
-      globalResponses = globalResponses + myJSON;
+      if (!resourceId || resourceId.lenght ==0 ){
+        globalResponses = globalResponses + "Header "  + resourceFields + " without resourceId \n";
+      }else{
+          const createResource = await proxy.createResource(resourceId,singleResource);
+          //console.log(createResource);
+          var myJSON = JSON.stringify(createResource, undefined,4);
+          globalResponses = globalResponses + "Resource - REQUEST" + JSON.stringify(singleResource, undefined,4) + "RESPONSE" + myJSON;
+          const createUser = await proxy.createUser(resourceId,singleUser);
+          //console.log(createResource);
+          var myJSON = JSON.stringify(createUser, undefined,4);
+          globalResponses = globalResponses + "User - REQUEST" + JSON.stringify(singleUser, undefined,4) + "RESPONSE" + myJSON;
+          const updateResponse = await proxy.updateResourceworkSkills(resourceId,resourceSkillsValues);
+        //  console.log(updateResponse);
+          myJSON = JSON.stringify(updateResponse, undefined,4);
+          globalResponses = globalResponses + "Skills - REQUEST" + JSON.stringify(resourceSkillsValues, undefined,4) + "RESPONSE" + myJSON;
+      }
 
     }
     element.innerHTML = element.innerHTML + "<pre>" + globalResponses + "</pre>";
