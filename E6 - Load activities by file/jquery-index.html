@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>jQuery UI Accordion : Creating an Accordion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/hot-sneaks/jquery-ui.css" />
+  <link href="https://transloadit.edgly.net/releases/uppy/v1.20.2/uppy.min.css" rel="stylesheet">
+  <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <script src="https://transloadit.edgly.net/releases/uppy/v1.20.2/uppy.min.js"></script>
+  <script src="utils.js"></script>
+  <script src="proxy.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#download").button({
+        icons: {
+          primary: "ui-icon-folder-open"
+        }
+      });
+      $("#accordion").accordion();
+      initPlugin();
+    });
+  </script>
+
+</head>
+
+<body>
+  <div id="accordion">
+    <h2><a href="#">Step 1: Retrieve Activities</a></h2>
+    <div> <button id="download" href="#">Get Activities</button> </div>
+    <h2><a href="#">Step 2. List of activities</a></h2>
+    <div id="secondary">
+      <div id="get-activities">List of activities</div>
+    </div>
+
+    <div id="secondary">
+      <div id="dd-area">Here</div>
+    </div>
+    <h2><a href="#">Step 3. Apply Assignments</a></h2>
+    <div>Apply uploaded data</div>
+
+    <h2><a href="#">Debug console</a></h2>
+    <div id="debugInfo">Space for debug info</div>
+  </div>
+
+</body>
+
+</html>
