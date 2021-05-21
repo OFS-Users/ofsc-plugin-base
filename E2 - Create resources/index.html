@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html manifest="manifest.appcache">
+<head>
+    <meta charset="utf-8">
+    <title>Update resources calendars</title>
+    <link rel="stylesheet" href="css/plugin.css" type="text/css"/>
+    <script src="proxy.js"></script>
+    <script src="plugin.js"></script>
+</head>
+<body id="body" onload="initPlugin()">
+  <div class="fondo ui-bar">
+    <div class="blankspace-right">
+      <div display="none" id="show-data"></div>
+      <div class="blankspace"></div>
+      <h2>Actualización de calendarios masiva</h2>
+      <div class="blankspace"></div>
+      <div class="blankspace"></div>
+      <div data-theme="d" class="ui-bar">
+        <input type="file" id="csvFileInput" onchange="handleFiles(this.files)" accept=".csv">
+        <button id="updateResources" class="t-Button t-Button--hot t-Button--gapTop t-Button--padBottom">Update Resources</button>
+      </div>
+      <div class="blankspace"></div>
+      <h2>Action debugger</h2>
+      <div display="none" id="action-debug"></div>
+      <div class="blankspace"></div>
+      <div data-role="footer" data-theme="d" class="ui-bar">
+        <button id="submit" class="t-Button t-Button--hot t-Button--gapTop t-Button--padBottom">Close</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

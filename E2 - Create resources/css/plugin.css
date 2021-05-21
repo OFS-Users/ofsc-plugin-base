@@ -1,0 +1,120 @@
+/**
+ * @licence
+ * Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+ * Oracle Technology Network Developer License Terms (http://www.oracle.com/technetwork/licenses/production-modify-license-2162709.html)
+ */
+ html, body{
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+    height:100%;
+    width:100%;
+    margin: 0px;
+    padding-top: 0px;
+    padding-bottom: 8px;
+    padding-left: 0px;
+    padding-right: 8px;
+}
+[type=reset], [type=submit], button, html [type=button] {
+    -webkit-appearance: button;
+}
+h2 {
+    font-size: 1.25rem;
+}
+.blankspace {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.blankspace-left {
+    padding-left: 20px;
+}
+.oj-button {
+    width: 140px;
+    height: 46px;
+    margin-top: 8px;
+    margin-bottom: 0;
+    padding-right: 16px;
+    padding-left: 16px;
+    cursor: pointer !important;
+    background-color: #ffffff;
+    text-decoration: none;
+    border-radius: 12px 12px 12px 12px;
+    -moz-border-radius: 12px 12px 12px 12px;
+    -webkit-border-radius: 12px 12px 12px 12px;
+    border: 1px solid #000000;
+}
+.oj-button:hover {
+    color: #ffffff;
+    background-color: #5a5959;
+}
+.fondo {
+    background: transparent url(../img/savetime2.png) center center no-repeat;
+    background-image: url(../img/savetime2.png);
+    background-position-x: center;
+    background-position-y: center;
+    background-size: cover;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: transparent;
+    width: 100%;
+    height: 468px;
+    height: 468px;
+    min-height: 468px;
+    background-size: cover;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    text-align: left;
+}
+.a-Button--hot, .t-Button--hot:not(.t-Button--simple), body .ui-button.ui-button--hot, body .ui-state-default.ui-priority-primary {
+    background-color: #5F7D4F;
+    color: #fff;
+}
+.a-Button, .a-Button.a-Button--popupLOV, .a-IG-button.a-IG-button--controls, .apex-button-group input+label, .t-Button:not(.t-Button--simple), .t-Form-fieldContainer--radioButtonGroup .apex-item-group--rc input+label, .ui-button {
+    color: #fff;
+    background-color: #5F7D4F;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.125) inset;
+}
+.a-Button, .t-Button, .ui-button {
+    border: none;
+    text-shadow: none;
+    transition: background-color .2s ease,box-shadow .2s ease,color .2s ease;
+}
+.a-Button, .t-Button, .ui-button {
+    border-radius: 3px;
+    font-weight: 600;
+}
+.t-Button {
+    -webkit-appearance: none;
+    background: 0 0;
+    background-clip: padding-box;
+    border: 0.5px solid #5F7D4F;
+    cursor: pointer;
+    display: inline-block;
+    font: inherit;
+    margin: 0;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    background-color: #5F7D4F;
+    color: #fff;
+}
+.t-Button--padBottom {
+    margin-bottom: .8rem!important;
+}
+.t-Button--gapTop {
+    margin-top: 1.2rem!important;
+}
+t-Body-titleHeading, .t-Button, .t-ButtonRegion-buttons, .t-Card-info, .t-Card-initials, .t-Comments-userIcon {
+    white-space: nowrap;
+}
+.t-Button, legend {
+    box-sizing: border-box;
+}
+button, hr, input {
+    overflow: visible;
+}

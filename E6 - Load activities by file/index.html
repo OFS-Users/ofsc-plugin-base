@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html manifest="manifest.appcache">
+<head>
+    <meta charset="utf-8">
+    <title>Base Plugin</title>
+    <script src="proxy.js"></script>
+    <script src="plugin.js"></script>
+</head>
+<body id="body" onload="initPlugin()">
+  <h2>Data</h2>
+  <input type="file" id="csvFileInput" onchange="handleFiles(this.files)"
+              accept=".csv"></div>
+  <hr>
+  <h2>Actions</h2>
+  <div>
+    <div data-theme="d" class="ui-bar">
+      <button id="copyActivities">Copy Activities</button>
+    </div>
+    <div data-theme="d" class="ui-bar">
+                <button id="close">Close</button>
+    </div>
+
+
+
+  <div display="none" id="show-data"></div>
+  <h2>Action debugger</h2>
+  <div display="none" id="action-debug"></div>
+  <hr>
+  <div data-theme="d" class="ui-bar">
+    <button id="showHideActivities">Show/Hide Activities</button>
+  </div>
+  <div display="block" id="activity_list"></div>
+<hr>
+
+
+</body>
+</html>
